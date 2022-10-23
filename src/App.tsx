@@ -1,5 +1,7 @@
+import { GenerateColorsPage } from 'pages/GenerateColorsPage/GenerateColorsPage'
+
 function App() {
-  return <div>Color Mood</div>
+  return <GenerateColorsPage count={3} />
 }
 
 export default App
