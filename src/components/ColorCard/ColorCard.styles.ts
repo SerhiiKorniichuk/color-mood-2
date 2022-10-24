@@ -35,6 +35,9 @@ const Container = styled('div')<IContainer>`
   justify-content: center;
   align-items: center;
   border-radius: 20px 20px 0 0;
+  border-width: 1px 1px 0 1px;
+  border-style: solid;
+  border-color: ${chroma(PALETTE.WHITE).alpha(0.25).css()};
   background-color: ${({ color }) => color || PALETTE.WHITE};
   transition: all 0.5s;
 `
