@@ -2,16 +2,14 @@ interface IColorCard {
   id: string
   value: string
   editable: boolean
-  onChange: (data: { id: string; value: string }) => void
+  hideDeleteButton: boolean
+  onDelete: (data: { id: string }) => void
   onLock: (data: { id: string; editable: boolean }) => void
 }
 
-interface IWrapped {
-  editable: boolean
+interface IBody {
+  hex: string
+  luminance: number
 }
 
-interface IContainer {
-  color: string
-}
-
-export type { IColorCard, IWrapped, IContainer }
+export type { IColorCard, IBody }

@@ -1,7 +1,7 @@
 import chroma from 'chroma-js'
 
-const getRandomColor = () => {
+const randomColor = () => {
   return chroma.random().hex().toUpperCase()
 }
 
-export { getRandomColor }
+export { randomColor }

@@ -1,20 +1,43 @@
 import { ColorCard } from 'components/ColorCard/ColorCard'
-import { getRandomColorsList, TColorCard } from 'utills/getRandomColorsList'
-import { PrimaryButton } from 'components/PrimaryButton/PrimaryButton'
-import { useState } from 'react'
-import { getRandomColor } from 'utills/getRandomColor'
+import { useCallback, useEffect, useState } from 'react'
 import * as CS from 'common/styles'
 import * as S from 'pages/GenerateColorsPage/GenerateColorsPage.styles'
-import { generateGradient } from 'utills/generateGradient'
+import { generate } from 'utills/colorsGeneration'
+import { PrimaryButton } from 'components/PrimaryButton/PrimaryButton'
+import { TColorCard } from 'common/types'
 
-interface ICardsWrapper {
-  count?: number
-}
+const INITIAL_CARDS_COUNT = 5
 
-function GenerateColorsPage({ count = 0 }: ICardsWrapper) {
+function GenerateColorsPage() {
   const [colors, setColors] = useState<TColorCard[]>(() =>
-    getRandomColorsList(count)
+    generate.randomColorsList(INITIAL_CARDS_COUNT)
   )
+
+  const generateNewColors = useCallback(() => {
+    const updatedColors = colors.map((color) =>
+      color.editable ? { ...color, value: generate.randomColor() } : color
+    )
+    setColors(updatedColors)
+  }, [colors])
+
+  const handeOnKeyDown = useCallback(
+    (event: globalThis.KeyboardEvent) => {
+      if (event.keyCode === 32) {
+        generateNewColors()
+      }
+    },
+    [generateNewColors]
+  )
+
+  useEffect(() => {
+    document.addEventListener('keydown', handeOnKeyDown)
+    return () => document.removeEventListener('keydown', handeOnKeyDown)
+  }, [handeOnKeyDown])
+
+  const onCardDelete = ({ id }: { id: string }) => {
+    const updatedColors = colors.filter((color) => color.id !== id)
+    setColors(updatedColors)
+  }
 
   const onCardLock = ({ id, editable }: { id: string; editable: boolean }) => {
     const updatedColors = colors.map((color) =>
@@ -23,26 +46,17 @@ function GenerateColorsPage({ count = 0 }: ICardsWrapper) {
     setColors(updatedColors)
   }
 
-  const onCardChange = ({ id, value }: { id: string; value: string }) => {
-    const updatedColors = colors.map((color) =>
-      color.id === id ? { ...color, value } : color
-    )
-    setColors(updatedColors)
+  const handleGenerateButtonClick = () => {
+    generateNewColors()
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur()
+    }
   }
 
-  const generateNewColors = () => {
-    const updatedColors = colors.map((color) =>
-      color.editable ? { ...color, value: getRandomColor() } : color
-    )
-    setColors(updatedColors)
-  }
-
-  const gradient = generateGradient(colors.map(({ value }) => value))
-
-  const disableGeneration = colors.every((color) => !color.editable)
+  const disableGeneration = !colors.some((color) => color.editable)
 
   return (
-    <S.Container gradient={gradient}>
+    <S.Container>
       <CS.LineGrid>
         {colors.map(({ id, value, editable }) => (
           <ColorCard
@@ -50,13 +64,18 @@ function GenerateColorsPage({ count = 0 }: ICardsWrapper) {
             id={id}
             value={value}
             editable={editable}
-            onChange={onCardChange}
+            hideDeleteButton={colors.length === 1}
+            onDelete={onCardDelete}
             onLock={onCardLock}
           />
         ))}
       </CS.LineGrid>
       <S.Footer>
-        <PrimaryButton onClick={generateNewColors} disabled={disableGeneration}>
+        <PrimaryButton
+          type="button"
+          onClick={handleGenerateButtonClick}
+          disabled={disableGeneration}
+        >
           Generate
         </PrimaryButton>
       </S.Footer>

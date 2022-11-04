@@ -1,21 +1,20 @@
 import styled from 'styled-components/macro'
+import { PALETTE } from 'common/palette'
+import chroma from 'chroma-js'
 
-const Container = styled('div')<{ gradient: string }>`
+const Container = styled('div')`
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: ${({ gradient }) => gradient};
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: all 0.5s;
+  display: grid;
+  grid-auto-rows: 1fr auto;
 `
 
 const Footer = styled('div')`
-  padding: 20px 0;
+  position: relative;
+  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 -1px ${chroma(PALETTE.BLACK).alpha(0.08).css()};
 `
 
 export { Container, Footer }

@@ -5,33 +5,32 @@ import { PALETTE } from 'common/palette'
 const Button = styled('button')`
   padding: 12px 20px;
   display: flex;
-  color: ${PALETTE.WHITE};
+  color: ${PALETTE.BLACK};
+  font-size: 0.8em;
   text-transform: uppercase;
+  font-weight: 800;
   border-radius: 10px;
-  border: 1px solid ${chroma(PALETTE.WHITE).alpha(0.25).css()};
-  background-color: ${chroma(PALETTE.WHITE).alpha(0.25).css()};
-  box-shadow: 0 4px 30px ${chroma(PALETTE.BLACK).alpha(0.1).css()};
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid ${PALETTE.WHITE};
+  background-color: ${PALETTE.WHITE};
+  box-shadow: 0 0 0 1px ${chroma(PALETTE.BLACK).alpha(0.15).css()};
   outline: none;
-  transition: all 0.5s;
+  transition: all 0.2s;
 
   &:not([disabled]) {
     cursor: pointer;
 
     &:hover {
-      background-color: ${chroma(PALETTE.WHITE).alpha(0.35).css()};
+      box-shadow: 0 0 5px 1px ${chroma(PALETTE.BLACK).alpha(0.08).css()};
     }
 
     &:active {
-      background-color: ${chroma(PALETTE.WHITE).alpha(0.15).css()};
-      transition: all 0.2s;
+      transform: scale(0.98);
     }
   }
 
   &:disabled {
-    color: ${chroma(PALETTE.WHITE).alpha(0.6).css()};
-    background-color: ${chroma(PALETTE.WHITE).alpha(0.15).css()};
+    color: ${chroma(PALETTE.BLACK).alpha(0.6).css()};
+    box-shadow: 0 0 0 1px ${chroma(PALETTE.BLACK).alpha(0.08).css()};
   }
 `
 
