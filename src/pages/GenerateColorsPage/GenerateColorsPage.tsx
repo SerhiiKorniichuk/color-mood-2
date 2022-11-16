@@ -1,45 +1,51 @@
-import { ColorCard } from 'components/ColorCard/ColorCard'
-import { useCallback, useEffect, useState } from 'react'
+import { useEventListener } from 'common/hooks/useEventListener'
 import * as CS from 'common/styles'
-import * as S from 'pages/GenerateColorsPage/GenerateColorsPage.styles'
-import { generate } from 'utills/colorsGeneration'
+import { ColorData, Handler } from 'common/types'
+import { blurActiveElement } from 'common/utils/blurActiveElement'
+import { generate } from 'common/utils/colorsGeneration'
+import { ColorCard } from 'components/ColorCard/ColorCard'
+import { ColorPicker } from 'components/ColorPicker/ColorPicker'
 import { PrimaryButton } from 'components/PrimaryButton/PrimaryButton'
-import { TColorCard } from 'common/types'
+import * as S from 'pages/GenerateColorsPage/GenerateColorsPage.styles'
+import { useCallback, useState } from 'react'
 
 const INITIAL_CARDS_COUNT = 5
 
 function GenerateColorsPage() {
-  const [colors, setColors] = useState<TColorCard[]>(() =>
+  const [colors, setColors] = useState<ColorData[]>(() =>
     generate.randomColorsList(INITIAL_CARDS_COUNT)
   )
 
+  const [selectedColorId, setSelectedColorId] = useState('')
+
+  const handleColorSelect: Handler<ColorData> = ({ id }) => {
+    setSelectedColorId(id)
+  }
+
   const generateNewColors = useCallback(() => {
     const updatedColors = colors.map((color) =>
-      color.editable ? { ...color, value: generate.randomColor() } : color
+      color.editable ? { ...color, hex: generate.randomColor() } : color
     )
     setColors(updatedColors)
   }, [colors])
 
-  const handeOnKeyDown = useCallback(
-    (event: globalThis.KeyboardEvent) => {
-      if (event.keyCode === 32) {
-        generateNewColors()
-      }
-    },
-    [generateNewColors]
-  )
+  useEventListener('keydown', (event) => {
+    if (event.code === 'Space') generateNewColors()
+  })
 
-  useEffect(() => {
-    document.addEventListener('keydown', handeOnKeyDown)
-    return () => document.removeEventListener('keydown', handeOnKeyDown)
-  }, [handeOnKeyDown])
+  const handleColorChange: Handler<ColorData> = ({ id, hex }) => {
+    const updatedColors = colors.map((color) =>
+      color.id === id ? { ...color, hex } : color
+    )
+    setColors(updatedColors)
+  }
 
-  const onCardDelete = ({ id }: { id: string }) => {
+  const handleColorDelete: Handler<ColorData> = ({ id }) => {
     const updatedColors = colors.filter((color) => color.id !== id)
     setColors(updatedColors)
   }
 
-  const onCardLock = ({ id, editable }: { id: string; editable: boolean }) => {
+  const handleColorLock: Handler<ColorData> = ({ id, editable }) => {
     const updatedColors = colors.map((color) =>
       color.id === id ? { ...color, editable } : color
     )
@@ -48,38 +54,48 @@ function GenerateColorsPage() {
 
   const handleGenerateButtonClick = () => {
     generateNewColors()
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur()
-    }
+    blurActiveElement()
   }
+
+  const selectedColor = colors.find((color) => color.id === selectedColorId)
 
   const disableGeneration = !colors.some((color) => color.editable)
 
   return (
-    <S.Container>
-      <CS.LineGrid>
-        {colors.map(({ id, value, editable }) => (
-          <ColorCard
-            key={id}
-            id={id}
-            value={value}
-            editable={editable}
-            hideDeleteButton={colors.length === 1}
-            onDelete={onCardDelete}
-            onLock={onCardLock}
-          />
-        ))}
-      </CS.LineGrid>
-      <S.Footer>
-        <PrimaryButton
-          type="button"
-          onClick={handleGenerateButtonClick}
-          disabled={disableGeneration}
-        >
-          Generate
-        </PrimaryButton>
-      </S.Footer>
-    </S.Container>
+    <>
+      <S.Container>
+        <CS.LineGrid>
+          {colors.map(({ id, hex, editable }) => (
+            <ColorCard
+              key={id}
+              id={id}
+              hex={hex}
+              editable={editable}
+              hideDeleteButton={colors.length === 1}
+              onClick={handleColorSelect}
+              onDelete={handleColorDelete}
+              onLock={handleColorLock}
+            />
+          ))}
+        </CS.LineGrid>
+        <S.Footer>
+          <PrimaryButton
+            type="button"
+            onClick={handleGenerateButtonClick}
+            disabled={disableGeneration}
+          >
+            Generate
+          </PrimaryButton>
+        </S.Footer>
+      </S.Container>
+
+      {selectedColor && (
+        <ColorPicker
+          color={selectedColor.hex}
+          onChange={() => handleColorChange(selectedColor)}
+        />
+      )}
+    </>
   )
 }
 

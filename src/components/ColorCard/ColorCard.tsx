@@ -1,25 +1,38 @@
-import { IColorCard } from 'components/ColorCard/ColorCard.types'
-import { ReactComponent as PadLockIcon } from 'assets/padlock_icon.svg'
 import { ReactComponent as CloseIcon } from 'assets/close_icon.svg'
-import classNames from 'classnames'
+import { ReactComponent as PadLockIcon } from 'assets/padlock_icon.svg'
 import chroma from 'chroma-js'
+import classNames from 'classnames'
+import { ColorData, Handler } from 'common/types'
 import * as S from './ColorCard.styles'
+
+interface ColorCardProps extends ColorData {
+  hideDeleteButton: boolean
+  onClick: Handler<ColorData>
+  onDelete: Handler<ColorData>
+  onLock: Handler<ColorData>
+}
 
 function ColorCard({
   id,
-  value,
+  hex,
   editable,
   hideDeleteButton,
+  onClick,
   onDelete,
   onLock,
-}: IColorCard) {
-  const handleDeleteClick = () => onDelete({ id })
-  const handleLockClick = () => onLock({ id, editable: !editable })
+}: ColorCardProps) {
+  const colorData = { id, hex, editable }
 
-  const luminance = chroma(value).luminance()
+  const handleViewClick = () => onClick(colorData)
+
+  const handleDeleteClick = () => onDelete(colorData)
+
+  const handleLockClick = () => onLock({ ...colorData, editable: !editable })
+
+  const luminance = chroma(hex).luminance()
 
   return (
-    <S.Wrapper hex={value} luminance={luminance}>
+    <S.Wrapper hex={hex} luminance={luminance}>
       <S.ActionButtonContainer>
         <S.ActionButton onClick={handleDeleteClick} hide={hideDeleteButton}>
           <CloseIcon />
@@ -31,7 +44,7 @@ function ColorCard({
           <PadLockIcon />
         </S.ActionButton>
       </S.ActionButtonContainer>
-      <S.ColorCodeView>{value}</S.ColorCodeView>
+      <S.ColorCodeView onClick={handleViewClick}>{hex}</S.ColorCodeView>
     </S.Wrapper>
   )
 }

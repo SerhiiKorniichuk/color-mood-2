@@ -1,11 +1,10 @@
 import chroma from 'chroma-js'
+import { ColorMode } from 'common/types'
 
-type TMode = 'rgb' | 'hsl' | 'hsv' | 'hsi' | 'lab' | 'lch' | 'hcl' | 'lrgb'
-
-const gradient = (colors: string[], mode?: TMode) => {
+const gradient = (colors: string[], mode?: ColorMode) => {
   const convertedColors = chroma
     .scale(colors)
-    .mode(mode || 'rgb')
+    .mode(mode || ColorMode.RGB)
     .colors(colors.length)
   return `linear-gradient(to right top, ${convertedColors.join(', ')})`
 }

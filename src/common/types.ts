@@ -1,7 +1,20 @@
-type TColorCard = {
+export enum ColorMode {
+  RGB = 'rgb',
+  HSL = 'hsl',
+  HSV = 'hsv',
+  HSI = 'hsi',
+  LAB = 'lab',
+  LCH = 'lch',
+  HCL = 'hcl',
+  LRGB = 'lrgb',
+}
+
+export interface ColorData {
   id: string
-  value: string
+  hex: string
   editable: boolean
 }
 
-export type { TColorCard }
+export interface Handler<TArg, TResult = void> {
+  (arg: TArg): TResult
+}
