@@ -38,7 +38,7 @@ const ActionButton = styled('div')<ActionButtonProps>`
   }
 `
 
-const ColorCodeView = styled('button')`
+const ColorCodeView = styled('div')`
   padding: 10px 15px;
   border-radius: 10px;
   font-size: 26px;
