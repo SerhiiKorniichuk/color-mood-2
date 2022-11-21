@@ -2,34 +2,36 @@ import { PALETTE } from 'common/palette'
 import styled from 'styled-components/macro'
 
 const Container = styled('div')`
-  padding: 16px;
+  padding: 25px;
   display: flex;
   flex-direction: column;
   background: ${PALETTE.WHITE};
-  box-shadow: 0 6px 12px ${PALETTE.BLACK};
+  border-radius: 25px;
 
   & .react-colorful {
     width: 250px;
-    height: 250px;
+    height: 225px;
 
     &__saturation {
-      margin: 10px 0 20px;
-      border-radius: 10px;
+      margin-bottom: 20px;
+      border-radius: 20px;
+      border-bottom: none;
 
-      &-pointer {
-        width: 25px;
-        height: 25px;
+      &__pointer {
+        width: 20px;
+        height: 20px;
       }
     }
 
-    &__hue {
-      margin: 0 0 20px;
+    &__hue,
+    &__alpha {
       height: 20px;
-      border-radius: 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
 
-      &-pointer {
-        width: 25px;
-        height: 25px;
+      &__pointer {
+        width: 20px;
+        height: 20px;
       }
     }
   }

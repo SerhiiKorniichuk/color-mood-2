@@ -1,10 +1,10 @@
 import { useEventListener } from 'common/hooks/useEventListener'
 import * as CS from 'common/styles'
-import { ColorData, Handler } from 'common/types'
-import { blurActiveElement } from 'common/utils/blurActiveElement'
+import { ColorData } from 'common/types'
 import { generate } from 'common/utils/colorsGeneration'
 import { ColorCard } from 'components/ColorCard/ColorCard'
 import { ColorPicker } from 'components/ColorPicker/ColorPicker'
+import { Modal } from 'components/Modal/Modal'
 import { PrimaryButton } from 'components/PrimaryButton/PrimaryButton'
 import * as S from 'pages/GenerateColorsPage/GenerateColorsPage.styles'
 import { useCallback, useState } from 'react'
@@ -16,10 +16,12 @@ function GenerateColorsPage() {
     generate.randomColorsList(INITIAL_CARDS_COUNT)
   )
 
-  const [selectedColorId, setSelectedColorId] = useState('')
+  const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(
+    null
+  )
 
-  const handleColorSelect: Handler<ColorData> = ({ id }) => {
-    setSelectedColorId(id)
+  const handleColorSelect = (cardIndex: number) => () => {
+    setSelectedColorIndex(cardIndex)
   }
 
   const generateNewColors = useCallback(() => {
@@ -30,34 +32,40 @@ function GenerateColorsPage() {
   }, [colors])
 
   useEventListener('keydown', (event) => {
-    if (event.code === 'Space') generateNewColors()
+    if (event.code === 'Space') {
+      event.preventDefault()
+      generateNewColors()
+    }
   })
 
-  const handleColorChange: Handler<ColorData> = ({ id, hex }) => {
-    const updatedColors = colors.map((color) =>
-      color.id === id ? { ...color, hex } : color
+  const handleColorChange = (cardIndex: number) => (newColor: string) => {
+    const updatedColors = colors.map((color, index) =>
+      index === cardIndex ? { ...color, hex: newColor } : color
     )
     setColors(updatedColors)
   }
 
-  const handleColorDelete: Handler<ColorData> = ({ id }) => {
-    const updatedColors = colors.filter((color) => color.id !== id)
+  const handleColorDelete = (cardIndex: number) => () => {
+    const updatedColors = colors.filter((_, index) => index !== cardIndex)
     setColors(updatedColors)
   }
 
-  const handleColorLock: Handler<ColorData> = ({ id, editable }) => {
-    const updatedColors = colors.map((color) =>
-      color.id === id ? { ...color, editable } : color
+  const handleColorLock = (cardIndex: number) => () => {
+    const updatedColors = colors.map((color, index) =>
+      index === cardIndex ? { ...color, editable: !color.editable } : color
     )
     setColors(updatedColors)
   }
 
   const handleGenerateButtonClick = () => {
     generateNewColors()
-    blurActiveElement()
   }
 
-  const selectedColor = colors.find((color) => color.id === selectedColorId)
+  const handleCloseModal = () => {
+    setSelectedColorIndex(null)
+  }
+
+  const colorSelected = typeof selectedColorIndex === 'number'
 
   const disableGeneration = !colors.some((color) => color.editable)
 
@@ -65,16 +73,15 @@ function GenerateColorsPage() {
     <>
       <S.Container>
         <CS.LineGrid>
-          {colors.map(({ id, hex, editable }) => (
+          {colors.map(({ hex, editable }, index) => (
             <ColorCard
-              key={id}
-              id={id}
+              key={index}
               hex={hex}
               editable={editable}
               hideDeleteButton={colors.length === 1}
-              onClick={handleColorSelect}
-              onDelete={handleColorDelete}
-              onLock={handleColorLock}
+              onClick={handleColorSelect(index)}
+              onDelete={handleColorDelete(index)}
+              onLock={handleColorLock(index)}
             />
           ))}
         </CS.LineGrid>
@@ -89,12 +96,14 @@ function GenerateColorsPage() {
         </S.Footer>
       </S.Container>
 
-      {selectedColor && (
-        <ColorPicker
-          color={selectedColor.hex}
-          onChange={() => handleColorChange(selectedColor)}
-        />
-      )}
+      <Modal isOpen={colorSelected} onRequestClose={handleCloseModal}>
+        {colorSelected && (
+          <ColorPicker
+            color={colors[selectedColorIndex].hex}
+            onChange={handleColorChange(selectedColorIndex)}
+          />
+        )}
+      </Modal>
     </>
   )
 }

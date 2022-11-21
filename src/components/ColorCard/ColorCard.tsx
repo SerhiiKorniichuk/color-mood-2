@@ -2,18 +2,17 @@ import { ReactComponent as CloseIcon } from 'assets/close_icon.svg'
 import { ReactComponent as PadLockIcon } from 'assets/padlock_icon.svg'
 import chroma from 'chroma-js'
 import classNames from 'classnames'
-import { ColorData, Handler } from 'common/types'
+import { ColorData } from 'common/types'
 import * as S from './ColorCard.styles'
 
 interface ColorCardProps extends ColorData {
   hideDeleteButton: boolean
-  onClick: Handler<ColorData>
-  onDelete: Handler<ColorData>
-  onLock: Handler<ColorData>
+  onClick: () => void
+  onDelete: () => void
+  onLock: () => void
 }
 
 function ColorCard({
-  id,
   hex,
   editable,
   hideDeleteButton,
@@ -21,13 +20,11 @@ function ColorCard({
   onDelete,
   onLock,
 }: ColorCardProps) {
-  const colorData = { id, hex, editable }
+  const handleViewClick = () => onClick()
 
-  const handleViewClick = () => onClick(colorData)
+  const handleDeleteClick = () => onDelete()
 
-  const handleDeleteClick = () => onDelete(colorData)
-
-  const handleLockClick = () => onLock({ ...colorData, editable: !editable })
+  const handleLockClick = () => onLock()
 
   const luminance = chroma(hex).luminance()
 

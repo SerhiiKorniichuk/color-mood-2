@@ -10,7 +10,6 @@ export enum ColorMode {
 }
 
 export interface ColorData {
-  id: string
   hex: string
   editable: boolean
 }
