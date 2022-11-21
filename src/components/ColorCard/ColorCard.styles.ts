@@ -1,7 +1,6 @@
-import styled from 'styled-components/macro'
-import { PALETTE } from 'common/palette'
-import { IBody } from 'components/ColorCard/ColorCard.types'
 import chroma from 'chroma-js'
+import { PALETTE } from 'common/palette'
+import styled from 'styled-components/macro'
 
 const ActionButtonContainer = styled('div')`
   display: flex;
@@ -10,11 +9,10 @@ const ActionButtonContainer = styled('div')`
   gap: 5px;
 `
 
-interface IActionButton {
+interface ActionButtonProps {
   hide?: boolean
 }
-
-const ActionButton = styled('div')<IActionButton>`
+const ActionButton = styled('div')<ActionButtonProps>`
   padding: 0;
   width: 40px;
   height: 40px;
@@ -40,7 +38,7 @@ const ActionButton = styled('div')<IActionButton>`
   }
 `
 
-const ColorCodeView = styled('button')`
+const ColorCodeView = styled('div')`
   padding: 10px 15px;
   border-radius: 10px;
   font-size: 26px;
@@ -57,11 +55,15 @@ const ColorCodeView = styled('button')`
   }
 `
 
+interface WrapperProps {
+  hex: string
+  luminance: number
+}
 const Wrapper = styled('div')
-  .withConfig<IBody>({
+  .withConfig<WrapperProps>({
     shouldForwardProp: (props) => !['hex', 'luminance'].includes(props),
   })
-  .attrs<IBody>(({ hex }) => ({
+  .attrs<WrapperProps>(({ hex }) => ({
     style: {
       backgroundColor: hex || PALETTE.WHITE,
     },
@@ -70,7 +72,6 @@ const Wrapper = styled('div')
   height: 100%;
   flex: 1;
   overflow: hidden;
-  transition: background-color 0.2s;
 
   ${ActionButtonContainer} {
     position: absolute;

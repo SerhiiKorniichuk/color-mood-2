@@ -1,56 +1,54 @@
-import { ColorCard } from 'components/ColorCard/ColorCard'
-import { useCallback, useEffect, useState } from 'react'
+import { useEventListener } from 'common/hooks/useEventListener'
 import * as CS from 'common/styles'
-import * as S from 'pages/GenerateColorsPage/GenerateColorsPage.styles'
-import { generate } from 'utills/colorsGeneration'
+import { ColorData } from 'common/types'
+import { generate } from 'common/utils/colorsGeneration'
+import { ColorCard } from 'components/ColorCard/ColorCard'
 import { PrimaryButton } from 'components/PrimaryButton/PrimaryButton'
-import { TColorCard } from 'common/types'
+import * as S from 'pages/GenerateColorsPage/GenerateColorsPage.styles'
+import { useCallback, useState } from 'react'
 
 const INITIAL_CARDS_COUNT = 5
 
 function GenerateColorsPage() {
-  const [colors, setColors] = useState<TColorCard[]>(() =>
+  const [colors, setColors] = useState<ColorData[]>(() =>
     generate.randomColorsList(INITIAL_CARDS_COUNT)
   )
 
   const generateNewColors = useCallback(() => {
     const updatedColors = colors.map((color) =>
-      color.editable ? { ...color, value: generate.randomColor() } : color
+      color.editable ? { ...color, hex: generate.randomColor() } : color
     )
     setColors(updatedColors)
   }, [colors])
 
-  const handeOnKeyDown = useCallback(
-    (event: globalThis.KeyboardEvent) => {
-      if (event.keyCode === 32) {
-        generateNewColors()
-      }
-    },
-    [generateNewColors]
-  )
+  useEventListener('keydown', (event) => {
+    if (event.code === 'Space') {
+      event.preventDefault()
+      generateNewColors()
+    }
+  })
 
-  useEffect(() => {
-    document.addEventListener('keydown', handeOnKeyDown)
-    return () => document.removeEventListener('keydown', handeOnKeyDown)
-  }, [handeOnKeyDown])
-
-  const onCardDelete = ({ id }: { id: string }) => {
-    const updatedColors = colors.filter((color) => color.id !== id)
+  const handleColorChange = (cardIndex: number) => (newColor: string) => {
+    const updatedColors = colors.map((color, index) =>
+      index === cardIndex ? { ...color, hex: newColor } : color
+    )
     setColors(updatedColors)
   }
 
-  const onCardLock = ({ id, editable }: { id: string; editable: boolean }) => {
-    const updatedColors = colors.map((color) =>
-      color.id === id ? { ...color, editable } : color
+  const handleColorDelete = (cardIndex: number) => () => {
+    const updatedColors = colors.filter((_, index) => index !== cardIndex)
+    setColors(updatedColors)
+  }
+
+  const handleColorLock = (cardIndex: number) => () => {
+    const updatedColors = colors.map((color, index) =>
+      index === cardIndex ? { ...color, editable: !color.editable } : color
     )
     setColors(updatedColors)
   }
 
   const handleGenerateButtonClick = () => {
     generateNewColors()
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur()
-    }
   }
 
   const disableGeneration = !colors.some((color) => color.editable)
@@ -58,15 +56,15 @@ function GenerateColorsPage() {
   return (
     <S.Container>
       <CS.LineGrid>
-        {colors.map(({ id, value, editable }) => (
+        {colors.map(({ hex, editable }, index) => (
           <ColorCard
-            key={id}
-            id={id}
-            value={value}
+            key={index}
+            hex={hex}
             editable={editable}
             hideDeleteButton={colors.length === 1}
-            onDelete={onCardDelete}
-            onLock={onCardLock}
+            onChange={handleColorChange(index)}
+            onDelete={handleColorDelete(index)}
+            onLock={handleColorLock(index)}
           />
         ))}
       </CS.LineGrid>
