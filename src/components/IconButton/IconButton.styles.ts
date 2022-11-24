@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 import { PALETTE } from 'common/palette'
 import chroma from 'chroma-js'
 

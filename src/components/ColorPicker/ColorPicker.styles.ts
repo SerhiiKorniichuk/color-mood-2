@@ -1,5 +1,5 @@
 import { PALETTE } from 'common/palette'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 const Container = styled('div')`
   padding: 25px;

@@ -1,6 +1,6 @@
 import chroma from 'chroma-js'
 import { PALETTE } from 'common/palette'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 const ActionButtonContainer = styled('div')`
   display: flex;
@@ -67,7 +67,7 @@ const Wrapper = styled('div')
     style: {
       backgroundColor: hex || PALETTE.WHITE,
     },
-  }))`  
+  }))`
   position: relative;
   height: 100%;
   flex: 1;

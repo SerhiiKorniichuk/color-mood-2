@@ -1,6 +1,6 @@
-import styled from 'styled-components/macro'
-import { PALETTE } from 'common/palette'
 import chroma from 'chroma-js'
+import { PALETTE } from 'common/palette'
+import styled from 'styled-components'
 
 const Container = styled('div')`
   min-height: 100vh;

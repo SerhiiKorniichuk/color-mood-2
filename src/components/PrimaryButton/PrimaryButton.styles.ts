@@ -1,6 +1,6 @@
-import styled from 'styled-components/macro'
 import chroma from 'chroma-js'
 import { PALETTE } from 'common/palette'
+import styled from 'styled-components'
 
 const Button = styled('button')`
   padding: 12px 20px;

@@ -1,6 +1,6 @@
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
-const LineGrid = styled.div`
+const LineGrid = styled('div')`
   height: 100%;
   display: flex;
   align-items: center;
