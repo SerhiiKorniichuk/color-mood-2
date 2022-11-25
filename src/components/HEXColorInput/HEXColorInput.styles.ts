@@ -1,29 +1,30 @@
-import chroma from 'chroma-js'
-import { PALETTE } from 'common/palette'
-import styled from 'styled-components'
+import { alpha } from '@mui/material'
+import { makeStyles } from 'tss-react/mui'
 
-const Container = styled.div`
-  & input {
-    padding: 12px 4px;
-    width: 100%;
-    text-align: center;
-    font-size: 16px;
-    color: ${PALETTE.BLACK};
-    border-radius: 10px;
-    border: 1px solid ${chroma(PALETTE.BLACK).alpha(0.15).css()};
-    background-color: transparent;
-    outline: none;
+const useStyles = makeStyles()((theme) => ({
+  container: {
+    '& input': {
+      padding: '12px 4px',
+      width: '100%',
+      textAlign: 'center',
+      fontSize: '16px',
+      color: theme.palette.black,
+      borderRadius: '10px',
+      border: `1px solid ${alpha(theme.palette.black, 0.15)}`,
+      backgroundColor: 'transparent',
+      outline: 'none',
 
-    &:not([disabled]) {
-      &:focus {
-        border-color: ${PALETTE.BLACK};
-      }
-    }
+      '&:not([disabled])': {
+        '&:focus': {
+          borderColor: theme.palette.black,
+        },
+      },
 
-    &:disabled {
-      color: ${chroma(PALETTE.BLACK).alpha(0.45).css()};
-    }
-  }
-`
+      '&:disabled': {
+        color: alpha(theme.palette.black, 0.15),
+      },
+    },
+  },
+}))
 
-export { Container }
+export { useStyles }

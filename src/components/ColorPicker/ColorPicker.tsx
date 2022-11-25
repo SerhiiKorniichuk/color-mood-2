@@ -1,7 +1,7 @@
 import { HEXColorInput } from 'components/HEXColorInput/HEXColorInput'
 import { HexColorPicker } from 'react-colorful'
 import { ColorPickerBaseProps } from 'react-colorful/dist/types'
-import * as S from './ColorPicker.styles'
+import { useStyles } from './ColorPicker.styles'
 
 function ColorPicker({
   color,
@@ -12,8 +12,10 @@ function ColorPicker({
     onChange(newColor.toLocaleUpperCase())
   }
 
+  const { classes } = useStyles()
+
   return (
-    <S.Container>
+    <div className={classes.container}>
       <HexColorPicker {...props} color={color} onChange={handleChange} />
       <HEXColorInput
         value={color}
@@ -21,7 +23,7 @@ function ColorPicker({
         maskPlaceholder=""
         alwaysShowMask
       />
-    </S.Container>
+    </div>
   )
 }
 

@@ -1,7 +1,7 @@
 import chroma from 'chroma-js'
 import { ChangeEvent, useEffect, useState } from 'react'
 import InputMask, { Props } from 'react-input-mask'
-import * as S from './HEXColorInput.styles'
+import { useStyles } from './HEXColorInput.styles'
 
 const character = /[0-9A-Fa-f]/
 
@@ -36,15 +36,17 @@ function HEXColorInput({ value, onChange, ...props }: HEXColorInputProps) {
     }
   }
 
+  const { classes } = useStyles()
+
   return (
-    <S.Container>
+    <div className={classes.container}>
       <InputMask
         {...props}
         mask={HEXColorMask}
         value={localValue}
         onChange={handleChange}
       />
-    </S.Container>
+    </div>
   )
 }
 

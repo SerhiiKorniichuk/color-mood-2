@@ -1,40 +1,40 @@
-import { PALETTE } from 'common/palette'
-import styled from 'styled-components'
+import { makeStyles } from 'tss-react/mui'
 
-const Container = styled('div')`
-  padding: 25px;
-  display: flex;
-  flex-direction: column;
-  background: ${PALETTE.WHITE};
-  border-radius: 25px;
+const useStyles = makeStyles()((theme) => ({
+  container: {
+    padding: '25px',
+    display: 'flex',
+    flexDirection: 'column',
+    background: theme.palette.white,
+    borderRadius: '25px',
 
-  & .react-colorful {
-    width: 250px;
-    height: 225px;
+    '& .react-colorful': {
+      width: '250px',
+      height: '225px',
 
-    &__saturation {
-      margin-bottom: 20px;
-      border-radius: 20px;
-      border-bottom: none;
+      '&__saturation': {
+        marginBottom: '20px',
+        borderRadius: '20px',
+        borderBottom: 'none',
 
-      &__pointer {
-        width: 20px;
-        height: 20px;
-      }
-    }
+        '&__pointer': {
+          width: '20px',
+          height: '20px',
+        },
+      },
 
-    &__hue,
-    &__alpha {
-      height: 20px;
-      border-radius: 20px;
-      margin-bottom: 20px;
+      '&__hue, &__alpha': {
+        height: '20px',
+        borderRadius: '20px',
+        marginBottom: '20px',
 
-      &__pointer {
-        width: 20px;
-        height: 20px;
-      }
-    }
-  }
-`
+        '&__pointer': {
+          width: '20px',
+          height: '20px',
+        },
+      },
+    },
+  },
+}))
 
-export { Container }
+export { useStyles }

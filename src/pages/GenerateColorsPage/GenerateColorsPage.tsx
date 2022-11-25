@@ -1,10 +1,10 @@
 import { useEventListener } from 'common/hooks/useEventListener'
-import * as CS from 'common/styles'
+import { useCommonStyles } from 'common/styles'
 import { ColorData } from 'common/types'
-import { generate } from 'common/utils/colorsGeneration'
+import { generate } from 'common/utilities/colorsGeneration'
 import { ColorCard } from 'components/ColorCard/ColorCard'
 import { PrimaryButton } from 'components/PrimaryButton/PrimaryButton'
-import * as S from 'pages/GenerateColorsPage/GenerateColorsPage.styles'
+import { useStyles } from 'pages/GenerateColorsPage/GenerateColorsPage.styles'
 import { useCallback, useState } from 'react'
 
 const INITIAL_CARDS_COUNT = 5
@@ -53,9 +53,13 @@ function GenerateColorsPage() {
 
   const disableGeneration = !colors.some((color) => color.editable)
 
+  const { classes: commonClasses } = useCommonStyles()
+
+  const { classes } = useStyles()
+
   return (
-    <S.Container>
-      <CS.LineGrid>
+    <div className={classes.container}>
+      <div className={commonClasses.lineGrid}>
         {colors.map(({ hex, editable }, index) => (
           <ColorCard
             key={index}
@@ -67,8 +71,8 @@ function GenerateColorsPage() {
             onLock={handleColorLock(index)}
           />
         ))}
-      </CS.LineGrid>
-      <S.Footer>
+      </div>
+      <div className={classes.footer}>
         <PrimaryButton
           type="button"
           onClick={handleGenerateButtonClick}
@@ -76,8 +80,8 @@ function GenerateColorsPage() {
         >
           Generate
         </PrimaryButton>
-      </S.Footer>
-    </S.Container>
+      </div>
+    </div>
   )
 }
 

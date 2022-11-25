@@ -1,13 +1,14 @@
+import { useTheme } from '@mui/material'
 import { ReactComponent as CloseIcon } from 'assets/close_icon.svg'
 import { ReactComponent as PadLockIcon } from 'assets/padlock_icon.svg'
 import chroma from 'chroma-js'
-import classNames from 'classnames'
-import { PALETTE } from 'common/palette'
 import { ColorData } from 'common/types'
 import { ColorPicker } from 'components/ColorPicker/ColorPicker'
 import { useState } from 'react'
 import { ArrowContainer, Popover } from 'react-tiny-popover'
-import * as S from './ColorCard.styles'
+import { ActionButton } from '../ActionButton/ActionButton'
+import { ColorCodeView } from '../ColorCodeView/ColorCodeView'
+import { useStyles } from './ColorCard.styles'
 
 interface ColorCardProps extends ColorData {
   hideDeleteButton: boolean
@@ -26,8 +27,9 @@ function ColorCard({
 }: ColorCardProps) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
-  const handlePopoverStatus = () =>
+  const handlePopoverStatus = () => {
     setIsPopoverOpen((prevStatus) => !prevStatus)
+  }
 
   const handleColorChange = (newColor: string) => onChange(newColor)
 
@@ -37,19 +39,28 @@ function ColorCard({
 
   const luminance = chroma(hex).luminance()
 
+  const theme = useTheme()
+
+  const { classes, cx } = useStyles({ hex, luminance })
+
   return (
-    <S.Wrapper hex={hex} luminance={luminance}>
-      <S.ActionButtonContainer>
-        <S.ActionButton onClick={handleDeleteClick} hide={hideDeleteButton}>
+    <div className={classes.wrapper}>
+      <div className={classes.actionsContainer}>
+        <ActionButton
+          hide={hideDeleteButton}
+          luminance={luminance}
+          onClick={handleDeleteClick}
+        >
           <CloseIcon />
-        </S.ActionButton>
-        <S.ActionButton
-          className={classNames({ active: !editable })}
+        </ActionButton>
+        <ActionButton
+          luminance={luminance}
+          className={cx({ active: !editable })}
           onClick={handleLockClick}
         >
           <PadLockIcon />
-        </S.ActionButton>
-      </S.ActionButtonContainer>
+        </ActionButton>
+      </div>
 
       <Popover
         isOpen={isPopoverOpen}
@@ -59,7 +70,7 @@ function ColorCard({
         content={(popoverProps) => (
           <ArrowContainer
             {...popoverProps}
-            arrowColor={PALETTE.WHITE}
+            arrowColor={theme.palette.white}
             arrowSize={15}
             arrowStyle={{
               zIndex: '-1',
@@ -69,16 +80,22 @@ function ColorCard({
               border: 0,
               borderRadius: '5px',
               transform: 'rotate(45deg)',
-              backgroundColor: PALETTE.WHITE,
+              backgroundColor: theme.palette.white,
             }}
           >
             <ColorPicker color={hex} onChange={handleColorChange} />
           </ArrowContainer>
         )}
       >
-        <S.ColorCodeView onClick={handlePopoverStatus}>{hex}</S.ColorCodeView>
+        <ColorCodeView
+          luminance={luminance}
+          className={classes.colorCodeView}
+          onClick={handlePopoverStatus}
+        >
+          {hex}
+        </ColorCodeView>
       </Popover>
-    </S.Wrapper>
+    </div>
   )
 }
 

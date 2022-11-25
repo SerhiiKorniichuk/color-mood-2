@@ -1,6 +1,6 @@
 import chroma from 'chroma-js'
-import { generate } from 'common/utils/colorsGeneration/index'
-import { getUniqId } from 'common/utils/getUniqId'
+import { generate } from 'common/utilities/colorsGeneration/index'
+import { getUniqId } from 'common/utilities/getUniqId'
 
 const scaledColorsList = (
   count: number,

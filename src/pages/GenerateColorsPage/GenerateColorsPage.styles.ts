@@ -1,20 +1,20 @@
-import chroma from 'chroma-js'
-import { PALETTE } from 'common/palette'
-import styled from 'styled-components'
+import { alpha } from '@mui/material'
+import { makeStyles } from 'tss-react/mui'
 
-const Container = styled('div')`
-  min-height: 100vh;
-  display: grid;
-  grid-auto-rows: 1fr auto;
-`
+const useStyles = makeStyles()((theme) => ({
+  container: {
+    minHeight: '100vh',
+    display: 'grid',
+    gridAutoRows: '1fr auto',
+  },
+  footer: {
+    position: 'relative',
+    padding: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: `0 -1px ${alpha(theme.palette.black, 0.08)}`,
+  },
+}))
 
-const Footer = styled('div')`
-  position: relative;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 -1px ${chroma(PALETTE.BLACK).alpha(0.08).css()};
-`
-
-export { Container, Footer }
+export { useStyles }

@@ -1,12 +1,16 @@
+import { ThemeProvider } from '@emotion/react'
+import '@fontsource/public-sans'
+import App from 'App'
+import { theme } from 'common/theme'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import App from 'App'
-import '@fontsource/public-sans'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>
 )
