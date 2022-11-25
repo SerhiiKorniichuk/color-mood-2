@@ -1,5 +1,5 @@
-import { ThemeProvider } from '@emotion/react'
 import '@fontsource/public-sans'
+import { ThemeProvider } from '@mui/material/styles'
 import App from 'App'
 import { theme } from 'common/theme'
 import React from 'react'
