@@ -12,7 +12,7 @@ const ColorCodeView = forwardRef<HTMLButtonElement, ColorCodeViewProps>(
       <button
         {...props}
         type={type}
-        className={cx(classes.colorCodeView, className)}
+        className={cx(classes.button, className)}
         ref={ref}
       />
     )

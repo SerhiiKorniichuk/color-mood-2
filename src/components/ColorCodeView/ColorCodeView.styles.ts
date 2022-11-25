@@ -3,7 +3,7 @@ import { makeStyles } from 'tss-react/mui'
 
 const useStyles = makeStyles<{ luminance?: number }>()(
   (theme, { luminance = 1 }) => ({
-    colorCodeView: {
+    button: {
       padding: '10px 15px',
       color: luminance > 0.6 ? theme.palette.black : theme.palette.white,
       fontSize: '26px',

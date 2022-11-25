@@ -10,11 +10,7 @@ const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
   ({ luminance, hide, className, ...props }, ref) => {
     const { classes, cx } = useStyles({ luminance, hide })
     return (
-      <button
-        {...props}
-        className={cx(classes.actionButton, className)}
-        ref={ref}
-      />
+      <button {...props} className={cx(classes.button, className)} ref={ref} />
     )
   }
 )

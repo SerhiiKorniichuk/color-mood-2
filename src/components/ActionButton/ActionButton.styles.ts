@@ -5,7 +5,7 @@ const useStyles = makeStyles<{
   hide?: boolean
   luminance?: number
 }>()((theme, { hide = false, luminance = 1 }) => ({
-  actionButton: {
+  button: {
     padding: 0,
     width: '40px',
     height: '40px',
