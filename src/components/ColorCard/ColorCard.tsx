@@ -47,7 +47,7 @@ function ColorCard({
     <div className={classes.wrapper}>
       <div className={classes.actionsContainer}>
         <ActionButton
-          hide={hideDeleteButton}
+          className={cx(classes.actionButton, { hide: hideDeleteButton })}
           luminance={luminance}
           onClick={handleDeleteClick}
         >
@@ -55,7 +55,7 @@ function ColorCard({
         </ActionButton>
         <ActionButton
           luminance={luminance}
-          className={cx({ active: !editable })}
+          className={cx(classes.actionButton, { active: !editable })}
           onClick={handleLockClick}
         >
           <PadLockIcon />

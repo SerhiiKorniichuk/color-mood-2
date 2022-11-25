@@ -2,9 +2,8 @@ import { alpha } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 
 const useStyles = makeStyles<{
-  hide?: boolean
   luminance?: number
-}>()((theme, { hide = false, luminance = 1 }) => ({
+}>()((theme, { luminance = 1 }) => ({
   button: {
     padding: 0,
     width: '40px',
@@ -18,8 +17,6 @@ const useStyles = makeStyles<{
     outline: 'none',
     userSelect: 'none',
     transition: 'all 0.2s',
-    opacity: hide ? 0 : 1,
-    visibility: hide ? 'hidden' : 'visible',
 
     '& > svg': {
       width: '60%',

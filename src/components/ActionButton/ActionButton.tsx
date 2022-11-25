@@ -3,12 +3,11 @@ import { useStyles } from './ActionButton.styles'
 
 interface ActionButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   luminance?: number
-  hide?: boolean
 }
 
 const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
-  ({ luminance, hide, className, ...props }, ref) => {
-    const { classes, cx } = useStyles({ luminance, hide })
+  ({ luminance, className, ...props }, ref) => {
+    const { classes, cx } = useStyles({ luminance })
     return (
       <button {...props} className={cx(classes.button, className)} ref={ref} />
     )
