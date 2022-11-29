@@ -6,7 +6,7 @@ interface ActionButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
-  ({ luminance, className, ...props }, ref) => {
+  ({ luminance = 1, className, ...props }, ref) => {
     const { classes, cx } = useStyles({ luminance })
     return (
       <button {...props} className={cx(classes.button, className)} ref={ref} />

@@ -6,6 +6,7 @@ const useCommonStyles = makeStyles()(() => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    overflowX: 'auto',
   },
 }))
 

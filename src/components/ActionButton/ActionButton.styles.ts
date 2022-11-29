@@ -1,9 +1,11 @@
 import { alpha } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles<{
-  luminance?: number
-}>()((theme, { luminance = 1 }) => ({
+interface StylesProps {
+  luminance: number
+}
+
+const useStyles = makeStyles<StylesProps>()((theme, { luminance }) => ({
   button: {
     padding: 0,
     width: '40px',

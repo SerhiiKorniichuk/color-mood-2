@@ -2,12 +2,13 @@ import { ButtonHTMLAttributes, forwardRef } from 'react'
 import { useStyles } from './ColorCodeView.styles'
 
 interface ColorCodeViewProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  active?: boolean
   luminance?: number
 }
 
 const ColorCodeView = forwardRef<HTMLButtonElement, ColorCodeViewProps>(
-  ({ luminance, className, type = 'button', ...props }, ref) => {
-    const { classes, cx } = useStyles({ luminance })
+  ({ active, luminance, className, type = 'button', ...props }, ref) => {
+    const { classes, cx } = useStyles({ active, luminance })
     return (
       <button
         {...props}

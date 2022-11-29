@@ -1,12 +1,10 @@
 import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles()((theme) => ({
+const useStyles = makeStyles()(() => ({
   container: {
     padding: '25px',
     display: 'flex',
     flexDirection: 'column',
-    background: theme.palette.white,
-    borderRadius: '25px',
 
     '& .react-colorful': {
       width: '250px',
